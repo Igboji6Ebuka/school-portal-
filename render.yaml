@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: vanswill-school-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && node db/seed.js
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true   # Render auto-generates a secure random value
+    disk:
+      name: school-db
+      mountPath: /data
+      sizeGB: 1             # 1 GB free persistent disk on Render
