@@ -10,12 +10,12 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  /\.vercel\.app$/,           // any Vercel preview/production URL
+  /\.vercel\.app$/,
 ]
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin) return cb(null, true) // allow non-browser (curl, Postman)
+    if (!origin) return cb(null, true)
     const ok = allowedOrigins.some(o =>
       typeof o === 'string' ? o === origin : o.test(origin)
     )
@@ -27,10 +27,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files (photos)
-const uploadsDir = process.env.NODE_ENV === 'production'
-  ? '/data/uploads'
-  : path.join(__dirname, 'uploads');
+// Serve uploaded files — stored inside project directory
+const uploadsDir = path.join(__dirname, 'uploads');
 app.use('/uploads', express.static(uploadsDir));
 
 // Routes
@@ -55,7 +53,7 @@ app.listen(PORT, () => {
   console.log(`\n🚀 Server running on http://localhost:${PORT}`);
   console.log(`📁 Uploads served at http://localhost:${PORT}/uploads\n`);
 
-  // Auto-seed the database on first startup (runs safely if already seeded)
+  // Auto-seed the database on first startup
   try {
     require('./db/seed');
   } catch (err) {

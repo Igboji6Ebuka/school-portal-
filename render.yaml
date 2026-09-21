@@ -10,7 +10,5 @@ services:
         value: production
       - key: JWT_SECRET
         generateValue: true
-    disk:
-      name: school-db
-      mountPath: /data
-      sizeGB: 1
+      - key: NODE_VERSION
+        value: 20.11.0

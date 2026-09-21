@@ -2,13 +2,9 @@ const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
-// In production on Render, use the persistent disk at /data
-// In development, store next to this file
-const DB_DIR = process.env.NODE_ENV === 'production' ? '/data' : __dirname;
-const DB_PATH = path.join(DB_DIR, 'school.db');
-const UPLOADS_PATH = process.env.NODE_ENV === 'production'
-  ? '/data/uploads'
-  : path.join(__dirname, '..', 'uploads');
+// Store DB and uploads inside the project directory (works on Render free tier)
+const DB_PATH = path.join(__dirname, 'school.db');
+const UPLOADS_PATH = path.join(__dirname, '..', 'uploads');
 
 // Ensure uploads directory exists
 if (!fs.existsSync(UPLOADS_PATH)) {
