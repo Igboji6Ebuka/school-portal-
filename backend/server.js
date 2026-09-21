@@ -54,4 +54,11 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`\n🚀 Server running on http://localhost:${PORT}`);
   console.log(`📁 Uploads served at http://localhost:${PORT}/uploads\n`);
+
+  // Auto-seed the database on first startup (runs safely if already seeded)
+  try {
+    require('./db/seed');
+  } catch (err) {
+    console.error('Seed error (non-fatal):', err.message);
+  }
 });
