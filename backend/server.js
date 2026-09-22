@@ -54,7 +54,12 @@ app.post(['/login', '/api/login'], (req, res, next) => {
   authRoutes(req, res, next);
 });
 
-// Health check
+// Health check & Root info
+app.get('/', (req, res) => res.json({
+  message: 'Vanswill School Portal API is running',
+  status: 'ok',
+  health: '/api/health'
+}));
 app.get(['/api/health', '/health'], (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 
 // Handle malformed JSON bodies — return 400 instead of crashing
