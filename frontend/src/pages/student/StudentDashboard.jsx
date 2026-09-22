@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import api from '../../api/axios'
 import Layout from '../../components/Layout'
-import { Avatar, gradeColor } from '../../components/utils'
+import { Avatar, gradeColor, getMediaUrl } from '../../components/utils'
 
 export default function StudentDashboard() {
   const [profile,   setProfile]   = useState(null)
@@ -134,7 +134,7 @@ export default function StudentDashboard() {
                 <p className="text-sm text-gray-500 mt-0.5">Academic Result Sheet</p>
               </div>
               {profile?.photo_path ? (
-                <img src={profile.photo_path} alt={profile?.name} className="w-24 h-28 object-cover border-2 border-blue-800 rounded" />
+                <img src={getMediaUrl(profile.photo_path)} alt={profile?.name} className="w-24 h-28 object-cover border-2 border-blue-800 rounded" />
               ) : (
                 <div className="w-24 h-28 border-2 border-blue-800 rounded bg-blue-50 flex items-center justify-center">
                   <span className="text-3xl font-bold text-blue-800">

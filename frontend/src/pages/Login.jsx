@@ -19,7 +19,15 @@ export default function Login() {
       if (user.role === 'teacher') return navigate('/teacher')
       navigate('/student')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed. Check your credentials.')
+      if (!err.response) {
+        toast.error('Cannot reach backend server. If using Render free tier, please wait ~30-50 seconds for it to wake up and try again.', { duration: 7000 })
+      } else if (err.response.status === 404) {
+        toast.error('Login endpoint not found (404). Ensure VITE_API_URL is set in Vercel project environment variables.', { duration: 7000 })
+      } else if (err.response.status === 401) {
+        toast.error('Invalid email / registration number or password.')
+      } else {
+        toast.error(err.response?.data?.message || 'Login failed. Check your credentials.')
+      }
     } finally {
       setLoading(false)
     }
@@ -109,6 +117,17 @@ export default function Login() {
                 <p>🎓 Student: <span className="font-mono">STU001</span> / <span className="font-mono">student123</span></p>
               </div>
             </div>
+
+            {!import.meta.env.VITE_API_URL && typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && (
+              <div className="mt-4 p-3.5 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900 leading-relaxed">
+                <p className="font-semibold flex items-center gap-1.5 mb-1">
+                  <span>⚠️</span> Setup Required in Vercel:
+                </p>
+                <p>
+                  Add <code className="bg-amber-100 px-1 py-0.5 rounded font-mono font-semibold">VITE_API_URL</code> in your Vercel Project Settings &gt; Environment Variables pointing to your Render backend URL, then redeploy.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
